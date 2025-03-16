@@ -2,14 +2,15 @@ const mongoose = require("mongoose");
 
 const PostSchema = new mongoose.Schema(
   {
-    image: { type: String, required: true }, // Post image
-    caption: { type: String, required: true }, // Caption
+    image: { type: String, required: true },
+    caption: { type: String, required: true },
     comments: [
       {
-        userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, // User reference
-        username: { type: String, required: true }, // Store username
-        text: { type: String, required: true }, // Comment text
-        createdAt: { type: Date, default: Date.now }, // Timestamp
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        username: { type: String, required: true },
+        text: { type: String, required: true },
+        isFlagged: { type: Boolean, default: false }, // Mark flagged comments
+        createdAt: { type: Date, default: Date.now },
       },
     ],
   },

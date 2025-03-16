@@ -6,6 +6,12 @@ exports.register = async (req, res) => {
   try {
     const { username, password } = req.body;
 
+    // Check if username already exists
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ message: "Username is already taken" });
+    }
+
     // Hash the password before saving
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ username, password: hashedPassword });
@@ -55,5 +61,16 @@ exports.getCurrentUser = async (req, res) => {
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: "Error fetching user data", error });
+  }
+};
+
+exports.getFlaggedComments = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("flaggedComments");
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.status(200).json({ flaggedComments: user.flaggedComments });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching flagged comments", error });
   }
 };
