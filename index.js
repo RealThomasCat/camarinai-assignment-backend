@@ -11,8 +11,10 @@ const authRoutes = require("./routes/authRoutes");
 const app = express();
 connectDB();
 
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
+
 app.use(express.json());
-app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
+app.use(cors({ credentials: true, origin: FRONTEND_URL }));
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
