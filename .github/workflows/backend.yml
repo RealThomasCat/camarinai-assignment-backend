@@ -1,0 +1,30 @@
+name: Backend CI/CD
+
+on:
+  push:
+    branches:
+      - main # Runs CI/CD when code is pushed to main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm install
+        working-directory: backend
+
+      - name: Run Tests
+        run: npm test
+        working-directory: backend
+
+      - name: Deploy to Render (Skip if using Vercel)
+        if: success()
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
