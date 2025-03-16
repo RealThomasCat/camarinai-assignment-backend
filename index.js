@@ -17,6 +17,12 @@ app.use(express.json());
 app.use(cors({ credentials: true, origin: FRONTEND_URL }));
 app.use(cookieParser());
 
+// Ensure cookie settings allow cross-domain access
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);

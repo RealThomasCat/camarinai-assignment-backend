@@ -1,6 +1,7 @@
 const axios = require("axios");
 
 const GOOGLE_NLP_API_KEY = process.env.GOOGLE_NLP_API_KEY;
+
 exports.moderateText = async (text) => {
   try {
     const response = await axios.post(
